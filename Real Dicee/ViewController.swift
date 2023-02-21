@@ -11,7 +11,7 @@ import SceneKit
 import ARKit
 
 class ViewController: UIViewController, ARSCNViewDelegate {
-
+    
     @IBOutlet var sceneView: ARSCNView!
     
     override func viewDidLoad() {
@@ -21,28 +21,28 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.delegate = self
         
         self.sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
-
-//        let cube = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0.01)
-
-//        let sphere = SCNSphere(radius: 0.2)
-//
-//        let material = SCNMaterial()
-//
-//        material.diffuse.contents = UIImage(named: "art.scnassets/moon.jpg")
-//
-//        sphere.materials = [material]
-//
-//        let node = SCNNode()
-//
-//        node.position = SCNVector3(x: 0, y: 0.1, z: -0.5)
-//
-//        node.geometry = sphere
-//
-//        sceneView.scene.rootNode.addChildNode(node)
-
+        
+        //        let cube = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0.01)
+        
+        //        let sphere = SCNSphere(radius: 0.2)
+        //
+        //        let material = SCNMaterial()
+        //
+        //        material.diffuse.contents = UIImage(named: "art.scnassets/moon.jpg")
+        //
+        //        sphere.materials = [material]
+        //
+        //        let node = SCNNode()
+        //
+        //        node.position = SCNVector3(x: 0, y: 0.1, z: -0.5)
+        //
+        //        node.geometry = sphere
+        //
+        //        sceneView.scene.rootNode.addChildNode(node)
+        
         sceneView.autoenablesDefaultLighting = true
-
-      
+        
+        
         
         
         
@@ -76,18 +76,18 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             let results = sceneView.hitTest(touchLocation, types: .existingPlaneUsingExtent)
             
             if let hitResult = results.first {
-
+                
                 // Create a new scene
                 let diceScene = SCNScene(named: "art.scnassets/diceCollada.scn")!
-
+                
                 if let diceNode = diceScene.rootNode.childNode(withName: "Dice", recursively: true) {
-
+                    
                     diceNode.position = SCNVector3(
                         x: hitResult.worldTransform.columns.3.x,
                         y: hitResult.worldTransform.columns.3.y + diceNode.boundingSphere.radius,
                         z: hitResult.worldTransform.columns.3.z
                     )
-
+                    
                     sceneView.scene.rootNode.addChildNode(diceNode)
                     
                     let randomX = Float((arc4random_uniform(4) + 1)) * (Float.pi/2)
@@ -95,7 +95,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                     let randomZ = Float((arc4random_uniform(4) + 1)) * (Float.pi/2)
                     
                     diceNode.runAction(SCNAction.rotateBy(x: CGFloat(randomX * 5), y: 0, z: CGFloat(randomZ * 5), duration: 0.5))
-
+                    
                 }
                 
             }
@@ -112,7 +112,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             print("plane detected")
             
             let planeAnchor = anchor as! ARPlaneAnchor
-
+            
             let plane = SCNPlane(width: CGFloat(planeAnchor.extent.x), height: CGFloat(planeAnchor.extent.z))
             
             let gridMaterial = SCNMaterial()
@@ -120,7 +120,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             plane.materials = [gridMaterial]
             
             let planeNode = SCNNode()
-
+            
             planeNode.geometry = plane
             planeNode.position = SCNVector3(planeAnchor.center.x, 0, planeAnchor.center.z)
             planeNode.transform = SCNMatrix4MakeRotation(-Float.pi/2, 1, 0, 0)
@@ -133,6 +133,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         //guard let planeAnchor = anchor as? ARPlaneAnchor else {return}
     }
-
-
+    
+    
 }
